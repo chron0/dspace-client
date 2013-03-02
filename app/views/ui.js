@@ -7,10 +7,11 @@ define([
   'views/map',
   'views/miniMap',
   'views/modal/userOptions',
+  'views/modal/widgetOptions',
   'views/modal/featureDetails',
   'views/modal/addFeature',
   'template/helpers/renderPos'
-], function(Backbone, $, remoteStorage, panels, FeatureBox, Map, MiniMap, UserOptions, FeatureDetails, AddFeature, renderPos) {
+], function(Backbone, $, remoteStorage, panels, FeatureBox, Map, MiniMap, UserOptions, widgetOptions, FeatureDetails, AddFeature, renderPos) {
 
 
   // /**
@@ -127,14 +128,13 @@ define([
           feature: id,
           modal: undefined
         });
-        
+
         //if(this.world.get('currentFeatureId') === id) {
         //  this.map.jumpToFeature(feature);
         //}
-        
+
         this.map.jumpToFeature(feature);
       }.bind(this));
-
 
 
       /**
@@ -145,7 +145,6 @@ define([
        * passed to <MiniMap>
        * used to jump <Map>
        */
-
       this.map = new Map({ world: this.world, dspace: this.dspace });
 
       this.map.on('marker-click', function(id) {
@@ -173,6 +172,11 @@ define([
       this.miniMap = new MiniMap({world: this.world, map: this.map});
 
       /**
+       * Creates widgetBar
+       */
+      this.widgetBar = new panels.WidgetBar();
+
+      /**
        * creates statusPanel
        */
       this.statusPanel = new panels.Status({model: this.world, ui: this});
@@ -185,11 +189,11 @@ define([
 
       this.world.on('change:currentFeatureId', function() {
         var feature = this.world.getCurrentFeature();
-        
+
         //disabled jumps for clicks on the map for now
         //FIXME: this is not the right place to do that.
         //Rethink on what events we actually want to move the map
-       
+
         //if(feature) {
         // this.map.jumpToFeature(feature);
         //}

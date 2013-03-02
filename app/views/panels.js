@@ -80,14 +80,13 @@ define([
       },
 
       show: function() {
-       $('#bottomBaffle').animate({ height: 47, duration: this.fadeDuration });
-       $('#bottomBaffle').fadeIn(this.fadeDuration);
+        $('#bottomBaffle').animate({ height: 47, duration: this.fadeDuration });
+        $('#bottomBaffle').fadeIn(this.fadeDuration);
       },
 
       hide: function(){
-        var self = this;
-       $('#bottomBaffle').animate({ height: 0, duration: this.fadeDuration });
-       $('#bottomBaffle').fadeOut(this.fadeDuration);
+        $('#bottomBaffle').animate({ height: 0, duration: this.fadeDuration });
+        $('#bottomBaffle').fadeOut(this.fadeDuration);
       },
 
     }),
@@ -120,6 +119,40 @@ define([
       }
     }),
 
+
+   /**
+     * Class: WidgetBar
+     *
+     * UI element for WidgetBar
+     *
+     */
+    WidgetBar: BasePanel.extend({
+
+      el: '#widgetBar',
+      template: templates.widgetBar,
+
+      events: {
+        'click #remotestorage-connect-icon': 'showWidgetOptions',
+      },
+
+      initialize: function() {
+        this.render();
+      },
+
+      render: function() {
+        console.log('Render widgetBar');
+        this.$el.html(this.template());
+      },
+
+      showWidgetOptions: function() {
+        console.log('showing widgets');
+        this.widgetOptions.showFX();
+      }
+
+    }),
+
+
+
     /**
      * Class: OverlaysPanel
      *
@@ -131,6 +164,33 @@ define([
 
       el: '#featureOptionModal',
       template: templates.featureOptionModal,
+      fadeDuration: 450,
+
+      showFX: function(){
+        this.$el.html( this.template());
+        this.$el.css( { 'display': 'block'});
+        this.$el.fadeIn(350);
+        this.visible = true;
+      },
+
+      hideFX: function(){
+        var self = this;
+        this.$el.fadeOut(350, function() { self.$el.hide(); });
+        this.visible = false;
+      }
+    }),
+
+    /**
+     * Class: OverlaysPanel
+     *
+     * UI element for OverlaysPanel
+     *
+     * (see overlaysPanel.png)
+     */
+    widgetOptions: BasePanel.extend({
+
+      el: '#widgetOptions',
+      template: templates.widgetOptions,
       fadeDuration: 450,
 
       showFX: function(){
@@ -164,8 +224,7 @@ define([
       fadeDuration: 450,
 
       events: {
-        'click #userGeoStatus': 'toggleGeoAPI',
-        'submit #searchForm': 'createSearch'
+        'click #userGeoStatus': 'toggleGeoAPI'
       },
 
       initialize: function() {
